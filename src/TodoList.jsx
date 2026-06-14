@@ -5,6 +5,7 @@ import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import Paper from '@mui/material/Paper'
+import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
@@ -19,7 +20,7 @@ import Divider from '@mui/material/Divider'
 import Tooltip from '@mui/material/Tooltip'
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
-import DeleteOutlineIcon from '@mui/icons-materials/DeleteOutline' // Fix icon import if needed, but checking first
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutlined'
 import CloseIcon from '@mui/icons-material/Close'
 import {
   addTodo,
@@ -110,7 +111,9 @@ function TodoList() {
                 placeholder={t('input_placeholder')}
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
-                inputProps={{ 'aria-label': t('checkbox_label', { text: draft || '', status: '' })}
+                slotProps={{
+                  input: { 'aria-label': t('checkbox_label', { text: draft || '', status: '' }) },
+                }}
               />
               <Button type="submit" variant="contained" disabled={!draft.trim()}>
                 {t('button_add')}
@@ -234,8 +237,10 @@ function TodoList() {
                         checked={todo.completed}
                         tabIndex={-1}
                         disableRipple
-                        inputProps={{
-                          'aria-label': t('checkbox_label', { text: todo.text, status: todo.completed ? 'completed' : 'active' }),
+                        slotProps={{
+                          input: {
+                            'aria-label': t('checkbox_label', { text: todo.text, status: todo.completed ? 'completed' : 'active' }),
+                          },
                         }}
                       />
                       {isEditing ? (
