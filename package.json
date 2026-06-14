@@ -1,0 +1,11 @@
+{
+    "homepage": "https://hongbhuang.github.io",
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "deploy": "gh-pages -d build"
+    },
+    "devDependencies": {
+        "gh-pages": "^6.3.0"
+    }
+}
