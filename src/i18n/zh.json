@@ -1,0 +1,27 @@
+{
+  "title": "待办事项",
+  "input_placeholder": "还有什么要做吗？",
+  "button_add": "添加",
+  "filter": {
+    "all": "全部",
+    "active": "进行中",
+    "completed": "已完成"
+  },
+  "clear_completed": {
+    "tooltip_empty": "没有已完成的任务可以清除",
+    "tooltip_count": "清除 {{count}} 个已完成任务",
+    "button": "清除已完成"
+  },
+  "lists": {
+    "empty_new": "还没有待办事项。在上方添加一个吧。",
+    "empty_filter": "这里什么都没有。试着换个过滤器。"
+  },
+  "actions": {
+    "save": "保存",
+    "cancel": "取消",
+    "edit": "编辑",
+    "delete": "删除"
+  },
+  "status_template": "{{active}} 进行中 / {{total}} 总数",
+  "checkbox_label": "将 {{text}} 标记为 {{status}}"
+}

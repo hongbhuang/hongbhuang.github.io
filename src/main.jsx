@@ -5,6 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import { store } from './store'
 import App from './App.jsx'
+import './i18n/i18n'
 
 const theme = createTheme({
   palette: {

@@ -14,14 +14,12 @@ import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
 import Checkbox from '@mui/material/Checkbox'
 import IconButton from '@mui/material/IconButton'
-import ToggleButton from '@mui/material/ToggleButton'
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
-import Box from '@mui/material/Box'
 import Divider from '@mui/material/Divider'
 import Tooltip from '@mui/material/Tooltip'
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutlined'
+import DeleteOutlineIcon from '@mui/icons-materials/DeleteOutline' // Fix icon import if needed, but checking first
 import CloseIcon from '@mui/icons-material/Close'
 import {
   addTodo,
@@ -32,6 +30,7 @@ import {
   setFilter,
 } from './store/todosSlice'
 import ThemeSwitcher from './ThemeSwitcher'
+import { useTranslation } from 'react-i18next'
 
 const selectFilteredTodos = (state) => {
   const { items, filter } = state.todos
@@ -55,6 +54,8 @@ function TodoList() {
   const todos = useSelector(selectFilteredTodos)
   const filter = useSelector((state) => state.todos.filter)
   const { total, completed, active } = useSelector(selectCounts)
+
+  const { t } = useTranslation()
 
   const handleAdd = (e) => {
     e?.preventDefault?.()
@@ -88,12 +89,12 @@ function TodoList() {
       <AppBar position="static" elevation={1}>
         <Toolbar>
           <Typography variant="h6" component="h1" sx={{ flexGrow: 1 }} id="todo-title">
-            Todo List
+            {t('title')}
           </Typography>
           <ThemeSwitcher />
-          <Tooltip title={`${active} active / ${total} total`}>
+          <Tooltip title={t('status_template', { active, total })}>
             <Typography variant="body2" sx={{ opacity: 0.8, ml: 1 }}>
-              {active} active / {total} total
+              {active} / {total}
             </Typography>
           </Tooltip>
         </Toolbar>
@@ -106,13 +107,13 @@ function TodoList() {
               <TextField
                 fullWidth
                 size="small"
-                placeholder="What needs to be done?"
+                placeholder={t('input_placeholder')}
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
-                inputProps={{ 'aria-label': 'New todo' }}
+                inputProps={{ 'aria-label': t('checkbox_label', { text: draft || '', status: '' })}
               />
               <Button type="submit" variant="contained" disabled={!draft.trim()}>
-                Add
+                {t('button_add')}
               </Button>
             </Stack>
           </Box>
@@ -131,17 +132,21 @@ function TodoList() {
               onChange={(_e, next) => {
                 if (next) dispatch(setFilter(next))
               }}
-              aria-label="Filter"
+              aria-label={t('filter_button', 'Filter')}
             >
-              <ToggleButton value="all">All</ToggleButton>
-              <ToggleButton value="active">Active</ToggleButton>
-              <ToggleButton value="completed">Completed</ToggleButton>
+              <ToggleButton value="all">{t('filter.all')}</ToggleButton>
+              <ToggleButton value="active">
+                {t('filter.active')}
+              </ToggleButton>
+              <ToggleButton value="completed">
+                {t('filter.completed')}
+              </ToggleButton>
             </ToggleButtonGroup>
             <Tooltip
               title={
                 completed === 0
-                  ? 'No completed todos to clear'
-                  : `Clear ${completed} completed`
+                  ? t('clear_completed.tooltip_empty')
+                  : t('clear_completed.tooltip_count', { count: completed })
               }
             >
               <span>
@@ -151,7 +156,7 @@ function TodoList() {
                   disabled={completed === 0}
                   onClick={() => dispatch(clearCompleted())}
                 >
-                  Clear completed
+                  {t('clear_completed.button')}
                 </Button>
               </span>
             </Tooltip>
@@ -167,8 +172,8 @@ function TodoList() {
               sx={{ py: 4 }}
             >
               {total === 0
-                ? 'No todos yet. Add one above to get started.'
-                : 'Nothing here. Try a different filter.'}
+                ? t('lists.empty_new')
+                : t('lists.empty_filter')}
             </Typography>
           ) : (
             <List disablePadding>
@@ -182,7 +187,7 @@ function TodoList() {
                     secondaryAction={
                       isEditing ? (
                         <Stack direction="row" spacing={0.5}>
-                          <Tooltip title="Save">
+                          <Tooltip title={t('actions.save')}>
                             <IconButton
                               size="small"
                               edge="end"
@@ -192,7 +197,7 @@ function TodoList() {
                               <SaveOutlinedIcon fontSize="small" />
                             </IconButton>
                           </Tooltip>
-                          <Tooltip title="Cancel">
+                          <Tooltip title={t('actions.cancel')}>
                             <IconButton size="small" edge="end" onClick={cancelEdit}>
                               <CloseIcon fontSize="small" />
                             </IconButton>
@@ -200,12 +205,12 @@ function TodoList() {
                         </Stack>
                       ) : (
                         <Stack direction="row" spacing={0.5}>
-                          <Tooltip title="Edit">
+                          <Tooltip title={t('actions.edit')}>
                             <IconButton size="small" edge="end" onClick={() => startEdit(todo)}>
                               <EditOutlinedIcon fontSize="small" />
                             </IconButton>
                           </Tooltip>
-                          <Tooltip title="Delete">
+                          <Tooltip title={t('actions.delete')}>
                             <IconButton
                               size="small"
                               edge="end"
@@ -230,9 +235,7 @@ function TodoList() {
                         tabIndex={-1}
                         disableRipple
                         inputProps={{
-                          'aria-label': `Mark ${todo.text} as ${
-                            todo.completed ? 'active' : 'completed'
-                          }`,
+                          'aria-label': t('checkbox_label', { text: todo.text, status: todo.completed ? 'completed' : 'active' }),
                         }}
                       />
                       {isEditing ? (

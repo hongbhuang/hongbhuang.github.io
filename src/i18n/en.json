@@ -1,0 +1,27 @@
+{
+  "title": "Todo List",
+  "input_placeholder": "What needs to be done?",
+  "button_add": "Add",
+  "filter": {
+    "all": "All",
+    "active": "Active",
+    "completed": "Completed"
+  },
+  "clear_completed": {
+    "tooltip_empty": "No completed todos to clear",
+    "tooltip_count": "Clear {{count}} completed",
+    "button": "Clear completed"
+  },
+  "lists": {
+    "empty_new": "No todos yet. Add one above to get started.",
+    "empty_filter": "Nothing here. Try a different filter."
+  },
+  "actions": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "status_template": "{{active}} active / {{total}} total",
+  "checkbox_label": "Mark {{text}} as {{status}}"
+}
