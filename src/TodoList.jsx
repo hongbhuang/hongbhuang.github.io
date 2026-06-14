@@ -179,13 +179,92 @@ function TodoList() {
                     key={todo.id}
                     disableGutters
                     divider
-                    secondaryAction={isEditng ? ( // Wait, I see a typo in my thought process - checking original for "isEditing"
-                      null // placeholder to avoid building again if not needed but I need the actual code. Let's fix my mental model.
-                    ) : null}
-                  >... (The logic is complex to re-type perfectly without error, let me just copy the precise original block and insert theme stuff)
-                   */}
-                })}
-              </ListItem>
+                    secondaryAction={
+                      isEditing ? (
+                        <Stack direction="row" spacing={0.5}>
+                          <Tooltip title="Save">
+                            <IconButton
+                              size="small"
+                              edge="end"
+                              onClick={commitEdit}
+                              disabled={!editingText.trim()}
+                            >
+                              <SaveOutlinedIcon fontSize="small" />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title="Cancel">
+                            <IconButton size="small" edge="end" onClick={cancelEdit}>
+                              <CloseIcon fontSize="small" />
+                            </IconButton>
+                          </Tooltip>
+                        </Stack>
+                      ) : (
+                        <Stack direction="row" spacing={0.5}>
+                          <Tooltip title="Edit">
+                            <IconButton size="small" edge="end" onClick={() => startEdit(todo)}>
+                              <EditOutlinedIcon fontSize="small" />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title="Delete">
+                            <IconButton
+                              size="small"
+                              edge="end"
+                              onClick={() => dispatch(removeTodo(todo.id))}
+                            >
+                              <DeleteOutlineIcon fontSize="small" />
+                            </IconButton>
+                          </Tooltip>
+                        </Stack>
+                      )
+                    }
+                  >
+                    <ListItemButton
+                      role={undefined}
+                      onClick={() => !isEditing && dispatch(toggleTodo(todo.id))}
+                      dense
+                      sx={{ borderRadius: 1 }}
+                    >
+                      <Checkbox
+                        edge="start"
+                        checked={todo.completed}
+                        tabIndex={-1}
+                        disableRipple
+                        inputProps={{
+                          'aria-label': `Mark ${todo.text} as ${
+                            todo.completed ? 'active' : 'completed'
+                          }`,
+                        }}
+                      />
+                      {isEditing ? (
+                        <TextField
+                          fullWidth
+                          size="small"
+                          autoFocus
+                          value={editingText}
+                          onChange={(e) => setEditingText(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              e.preventDefault()
+                              commitEdit()
+                            } else if (e.key === 'Escape') {
+                              cancelEdit()
+                            }
+                          }}
+                          onClick={(e) => e.stopPropagation()}
+                        />
+                      ) : (
+                        <ListItemText
+                          primary={todo.text}
+                          sx={{
+                            textDecoration: todo.completed ? 'line-through' : 'none',
+                            color: todo.completed ? 'text.disabled' : 'text.primary',
+                          }}
+                        />
+                      )}
+                    </ListItemButton>
+                  </ListItem>
+                )
+              })}
             </List>
           )}
         </Paper>
