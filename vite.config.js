@@ -4,5 +4,7 @@ import react from '@vitejs/plugin-react'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/hongbhuang.github.io/',
+  // Repository IS the user/organization site (<owner>.github.io), so it is
+  // served from the domain root and must NOT carry a /<repo>/ base prefix.
+  base: '/',
 })
